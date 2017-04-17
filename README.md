@@ -26,7 +26,7 @@ Issues:
 
 Typical results:
 
-![alt text](https://github.com/RAvontuur/predictive-sparse-coding/blob/master/system-dynamics/result-plot.jpg "Result plot of a simulation run")
+![alt text](https://github.com/RAvontuur/predictive-sparse-coding/blob/master/regression-analysis/result-plot.jpg "Result plot of a simulation run")
 
 
 ## System dynamics model type
