@@ -31,7 +31,7 @@ for(i=1:Nsteps-1)
 
 end 
 
-Vfinal = reshape(V(Nsteps,:), Ninputs, Nneurons)
+Vfinal = reshape(V(Nsteps,:), Nneurons, Nsamples)
 Gfinal = reshape(G(Nsteps,:), Ninputs, Nneurons)
 
 Ureconstructed = Gfinal * Vfinal
