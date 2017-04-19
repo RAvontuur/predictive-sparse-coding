@@ -19,7 +19,7 @@ function [deltaV, deltaG] = neuron (U, V, G)
   % Prediction Error for U
   EPS = U - G*V;
 
-  % Sparseness Constraint (scalar)
+  % Sparseness Constraint
   gdot = sparse(V);
 
   % Recurrent Network Implementation of Sparse Coding
