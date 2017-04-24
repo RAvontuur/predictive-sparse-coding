@@ -15,7 +15,7 @@ W = zeros(Nsteps, Ninputs * Nneurons);
 
 % randomized initialization
 for (i = 1:Ninputs*Nneurons)
-    W(1,i) = -0.5 + 2 * rand();
+    W(1,i) = rand();
 end
 
 for(t=1:Nsteps-1)
