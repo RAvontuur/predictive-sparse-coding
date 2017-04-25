@@ -1,18 +1,15 @@
+## simulate a network of neurons
+##
+function [U, V, W, X] = network (U, Nneurons, deltaT)
 
-Nsteps = 200;
-Ninputs = 2;
-Nneurons = 5;
+[Nsteps, Ninputs] = size(U);
 
 % threshold for v, below this will pass input to the next neuron
 vmin = 0.1;
 
-% total duration (sec)
-duration = 10;
-% duration of integration step
-deltaT = duration / Nsteps;
-
 % inputs for each input and neuron
-U = zeros(Nsteps, Ninputs * Nneurons);
+U = [U zeros(Nsteps, Ninputs * (Nneurons-1))];
+
 % firing rate for each neuron
 V = zeros(Nsteps, Nneurons);
 % weights for each input and neuron
@@ -29,8 +26,6 @@ for (i = 1:Nneurons)
 end
 
 for(t=1:Nsteps-1)
-    U(t,1:Ninputs) = input(t * deltaT);
-
     for (i=1:Nneurons)
         i1 = (i-1) * Ninputs + 1;
         i2 = i1 + Ninputs - 1;
@@ -54,16 +49,4 @@ for(t=1:Nsteps-1)
     end
 end 
 
-disp('V firing rates')
-V(Nsteps-1,:)
-disp('X (vmin)')
-X(Nsteps-1,:)
-disp('W weights')
-reshape(W(Nsteps,:), Ninputs, Nneurons)
 
-subplot(2,1,1)
-plot(V(:,1), "r", V(:,2), "b", V(:,3), "g", V(:,4), "p")
-ylabel('v')
-subplot(2,1,2)
-plot(W(:,1), "r", W(:,2), "b", W(:,3), "g", W(:,4), "p")
-ylabel('W')

@@ -14,13 +14,14 @@ function [v, deltaW, x] = neuron (U, W, x0, deltaT)
 
   eta = 1;
   alfa = 1;
+  tau = 0.5;
 
   v = W' * U;
   deltaW = deltaT * eta * (v * U - alfa * v * v * W);
 
   % some threshold, below this threshold pass input to next neuron
   if (v > x0)
-    x = (9 * x0 + v)/10;
+    x = (v + (tau/deltaT) * x0) / (1 + (tau/deltaT));
   else
     x = x0;
     v = 0;
