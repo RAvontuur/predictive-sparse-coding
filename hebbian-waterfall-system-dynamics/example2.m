@@ -8,7 +8,7 @@ duration = 20;
 % duration of integration step
 deltaT = duration / Nsteps;
 
-% set give input traject (no noise)
+% set give input traject (noisy input)
 U = zeros(Nsteps, Ninputs);
 for(t=1:Nsteps-1)
   T = t * deltaT;
@@ -17,16 +17,19 @@ for(t=1:Nsteps-1)
     T  = T - 10;
   end
   if (T < 3.0)
-    Ut = [0.8;0.1];
+    Ut = [0.7;0.3];
   else if (T< 5.0)
     Ut = [0.1;0.8];
   else if (T<7.5)
     Ut = [0.3;0.3];
   else
-    Ut = [0.3;0.6];
+    Ut = [0.4;0.6];
   end end end
   Ut = Ut / norm(Ut);
-  U(t,1:Ninputs) = Ut';
+  % add some noise
+  n1 = (-0.5 + rand())/10;
+  n2 = (-0.5 + rand())/10;
+  U(t,1:Ninputs) = Ut' + [n1 n2];
 end
 
 % simulate
