@@ -8,10 +8,9 @@
 ## 
 ##  deltaT timespan of one integration step
 ##
-function [v, deltaW, x , EPS] = neuron (U, W, x0, deltaT)
+function [v, deltaW, x] = neuron (U, W, x0, deltaT)
 
   [Ninputs] = size(U);
-  EPS = zeros(Ninputs);
 
   eta = 1;
   alfa = 1;
@@ -26,6 +25,5 @@ function [v, deltaW, x , EPS] = neuron (U, W, x0, deltaT)
     x = x0;
     v = 0;
     deltaW  = zeros(Ninputs);
-    EPS = U;
   end
 end
