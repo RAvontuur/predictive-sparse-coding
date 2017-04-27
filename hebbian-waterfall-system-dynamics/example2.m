@@ -34,7 +34,7 @@ end
 
 % simulate
 
-[U, V, W, X] = network(U, Nneurons, deltaT);
+[V, W, X] = network(U, Nneurons, deltaT);
 
 % output
 

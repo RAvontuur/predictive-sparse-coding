@@ -31,20 +31,16 @@ end
 
 % simulate
 
-[U, V, W, X] = network(U, Nneurons, deltaT);
+[V, W, X] = network(U, Nneurons, deltaT);
 
 % output
 
 disp('V firing rates')
 V(Nsteps-1,:)
 disp('X (vmin)')
-X(Nsteps-1,:)
+X
 disp('W weights')
-reshape(W(Nsteps,:), Ninputs, Nneurons)
+W
 
-subplot(2,1,1)
 plot(V(:,1), "r", V(:,2), "b", V(:,3), "g", V(:,4), "p")
 ylabel('v')
-subplot(2,1,2)
-plot(W(:,1), "r", W(:,2), "b", W(:,3), "g", W(:,4), "p")
-ylabel('W')
