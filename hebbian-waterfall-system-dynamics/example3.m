@@ -2,56 +2,48 @@ Nsteps = 400;
 Ninputs = 25;
 Nneurons = 5;
 
-deltaT = 0.05;
-
 % set give input traject (noisy input)
-U = zeros(Nsteps, Ninputs);
-for(t=1:Nsteps-1)
-  T = t * deltaT;
-  if (T > 10)
-    % repeat
-    T  = T - 10;
-  end
-  if (T < 3.0)
-Ut = [1 0 0 0 0
+Ut1 = [1 0 0 0 0
       0 1 0 0 0
       0 0 1 0 0
       0 0 0 1 0
       0 0 0 0 1];
-  else if (T< 5.0)
-Ut = [0 0 1 0 0
+Ut2 = [0 0 1 0 0
       0 0 1 0 0
       0 0 1 0 0
       0 0 1 0 0
       0 0 1 0 0];
-  else if (T<7.5)
-Ut = [0 0 0 0 1
+Ut3 = [0 0 0 0 1
       0 0 0 1 0
       0 0 1 0 0
       0 1 0 0 0
       1 0 0 0 0];
-  else
-Ut = [0 0 0 0 0
+Ut4 = [0 0 0 0 0
       0 0 0 0 0
       1 1 1 1 1
       0 0 0 0 0
       0 0 0 0 0];
-  end end end
-  U(t,1:Ninputs) = vec(Ut)';
-end
+
+U = [vec(Ut1)'; vec(Ut2)'; vec(Ut3)'; vec(Ut4)'];
+[Nchanges, Ninputs] = size(U);
+
+
+NrepeatsInner = 5;
+NrepeatsOuter = 5;
+Nsteps = Nchanges * NrepeatsInner * NrepeatsOuter;
 
 % simulate
 
-[U, V, W, X] = network(U, Nneurons, deltaT);
+[V, W, X] = network (U, Nneurons, NrepeatsInner, NrepeatsOuter);
 
 % output
 
 disp('V firing rates')
-V(Nsteps-1,:)
+V(Nsteps,:)
 disp('X (vmin)')
-X(Nsteps-1,:)
+X
 disp('W weights')
-reshape(W(Nsteps,:), Ninputs, Nneurons)
+W
 
 plot(V(:,1), "r", V(:,2), "b", V(:,3), "g", V(:,4), "p")
 ylabel('v')

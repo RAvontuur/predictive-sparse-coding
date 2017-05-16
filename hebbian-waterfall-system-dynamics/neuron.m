@@ -1,28 +1,31 @@
 ##  
 ## computes changes in V and G of a collection of neurons
-## usage: [deltaV, deltaY, deltaG] = neuron (U, V, Y, G, deltaT)
+## usage: [v, deltaW, x] = neuron (U, W, x0)
 ##
-##  U inputs 
-##  v firing rates of the neuron
+##  U inputs (for each timestep)
 ##  W synaptic weights
-## 
-##  deltaT timespan of one integration step
+##  x0 state after previous timestep
 ##
-function [v, deltaW, x] = neuron (U, W, x0, deltaT)
+##  results:
+##  v firing rate
+##  deltaW change in weights
+##  X new state
+
+function [v, deltaW, x] = neuron (U, W, x0)
 
   [Ninputs] = size(U);
 
-  eta = 1;
-  alfa = 1;
-  tau = 0.2;
+  eta = 0.1;
+  alfa = 0.1;
+  beta = 0.1;
   perc =  0.9;
 
   v = W' * U;
-  deltaW = deltaT * eta * (v * U - alfa * v * v * W);
+  deltaW = eta * (v * U - alfa * v * v * W);
 
   % some threshold, below this threshold pass input to next neuron
   if (v > (perc * x0))
-    x = (v + (tau/deltaT) * x0) / (1 + (tau/deltaT));
+    x = beta * v + (1-beta) * x0;
   else
     x = x0;
     v = 0;

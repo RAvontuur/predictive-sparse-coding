@@ -18,31 +18,25 @@ displayData(sel);
 fprintf('Program paused. Press enter to continue.\n');
 pause;
 
-% total duration
-deltaT = 0.02;
+U = sel;
+[Nchanges, Ninputs] = size(U);
 
-Nsteps = 50;
-Ninputs = size(X,2);
-Nneurons = 5;
 
-% set give input traject (no noise)
-U = zeros(Nsteps, Ninputs);
-for(t=1:Nsteps-1)
-  i = floor(t/10);
-  i = 1 + mod(i,m);
-  U(t,1:Ninputs) = X(i,:);
-end
+NrepeatsInner = 5;
+NrepeatsOuter = 5;
+Nsteps = Nchanges * NrepeatsInner * NrepeatsOuter;
+Nneurons = 100;
 
 % simulate
 
-[V, W, Z] = network(U, Nneurons, deltaT);
+[V, W, X] = network (U, Nneurons, NrepeatsInner, NrepeatsOuter);
 
 % output
 
 disp('V firing rates')
-V(Nsteps-1,:)
-disp('Z (vmin)')
-Z
+V(Nsteps,:)
+disp('X (vmin)')
+X
 disp('W weights')
 W
 
