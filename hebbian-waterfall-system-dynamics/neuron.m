@@ -15,9 +15,9 @@ function [v, deltaW, x] = neuron (U, W, x0)
 
   [Ninputs] = size(U);
 
-  eta = 0.1;
-  alfa = 0.1;
-  beta = 0.1;
+  eta = 0.2;
+  alfa = 0.2;
+  beta = 0.4;
   perc =  0.9;
 
   v = W' * U;

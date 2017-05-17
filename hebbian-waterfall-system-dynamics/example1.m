@@ -1,42 +1,29 @@
-Nsteps = 400;
 Ninputs = 2;
 Nneurons = 5;
 
-% total duration
-duration = 20;
+% set give input traject (noisy input)
+Ut1 = [0.7;0.3];
+Ut2 = [0.1;0.8];
+Ut3 = [0.3;0.3];
+Ut4 = [0.4;0.6];
 
-% duration of integration step
-deltaT = duration / Nsteps;
+U = 2 * [vec(Ut1)'; vec(Ut2)'; vec(Ut3)'; vec(Ut4)'];
 
-% set give input traject (no noise)
-U = zeros(Nsteps, Ninputs);
-for(t=1:Nsteps-1)
-  T = t * deltaT;
-  if (T > 10)
-    % repeat
-    T  = T - 10;
-  end
-  if (T < 3.0)
-    Ut = [0.8;0.1];
-  else if (T< 5.0)
-    Ut = [0.1;0.8];
-  else if (T<7.5)
-    Ut = [0.3;0.3];
-  else
-    Ut = [0.3;0.6];
-  end end end
-  Ut = Ut / norm(Ut);
-  U(t,1:Ninputs) = Ut';
-end
+[Nchanges, Ninputs] = size(U);
+
+
+NrepeatsInner = 5;
+NrepeatsOuter = 5;
+Nsteps = Nchanges * NrepeatsInner * NrepeatsOuter;
 
 % simulate
 
-[V, W, X] = network(U, Nneurons, deltaT);
+[V, W, X] = network (U, Nneurons, NrepeatsInner, NrepeatsOuter);
 
 % output
 
 disp('V firing rates')
-V(Nsteps-1,:)
+V(Nsteps,:)
 disp('X (vmin)')
 X
 disp('W weights')

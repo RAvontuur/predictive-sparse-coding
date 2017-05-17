@@ -19,7 +19,7 @@ X = zeros(Nneurons,1);
 % randomized initialization
 for (i = 1:Ninputs)
   for (j= 1:Nneurons)
-    W(i,j) = 0.5 + 0.5 * rand();
+    W(i,j) = (0.5 + 0.5 * rand()) / Ninputs;
   end
 end
 for (i = 1:Nneurons)
