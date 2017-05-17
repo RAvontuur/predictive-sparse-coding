@@ -32,17 +32,18 @@ for(to = 1:NrepeatsOuter)
             t = (to-1) * Nchanges * NrepeatsInner + (tc-1) * NrepeatsInner + ti;
             Ut =  U(tc,:)';
             v = 0;
-            for (i=1:Nneurons)
+            i = 1;
+            while (i <= Nneurons)
 
                 [v, deltaW, x] = neuron(Ut, W(:,i), X(i));
                 V(t+1,i) = v;
                 W(:,i) = W(:,i) + deltaW;
                 X(i) = x;
 
-                % chain of responsibility pattern
+                i = i * 2;
+                % choose odd branch when firing
                 if (v > vmin)
-                  % handled
-                  break;
+                  i = i + 1;
                 end
             end
         end

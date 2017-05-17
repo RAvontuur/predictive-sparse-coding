@@ -1,5 +1,5 @@
 Ninputs = 2;
-Nneurons = 5;
+Nneurons = 7;
 
 % set give input traject (noisy input)
 Ut1 = [0.7;0.3];
@@ -29,5 +29,5 @@ X
 disp('W weights')
 W
 
-plot(V(:,1), "r", V(:,2), "b", V(:,3), "g", V(:,4), "p")
+plot(V(:,Nneurons), "r", V(:,Nneurons-1), "b", V(:,Nneurons-2), "g", V(:,Nneurons-3), "p")
 ylabel('v')
