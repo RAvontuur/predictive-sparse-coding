@@ -25,20 +25,20 @@ U = sel;
 NrepeatsInner = 5;
 NrepeatsOuter = 5;
 Nsteps = Nchanges * NrepeatsInner * NrepeatsOuter;
-Nneurons = 100;
+Nneurons = 256;
+% thresholds
+vmin = 0.1;
+percMin = 0.20;
+percMax = 0.98;
 
 % simulate
 
-[V, W, X] = network (U, Nneurons, NrepeatsInner, NrepeatsOuter);
+[V, W, X] = network (U, Nneurons, NrepeatsInner, NrepeatsOuter, vmin, percMin, percMax);
 
 % output
 
-disp('V firing rates')
-V(Nsteps,:)
-disp('X (vmin)')
-X
-disp('W weights')
-W
+%disp('V firing rates')
+%V(Nsteps: -NrepeatsInner: 1 + Nchanges * NrepeatsInner * (NrepeatsOuter - 1), :)
 
-plot(V(:,1), "r", V(:,2), "b", V(:,3), "g", V(:,4), "p")
-ylabel('v')
+disp('X (vmin)')
+X'

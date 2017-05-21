@@ -2,6 +2,7 @@ Ninputs = 2;
 Nneurons = 7;
 % thresholds
 vmin = 0.1;
+percMin = 0.90;
 percMax = 0.98;
 
 % set give input traject (noisy input)
@@ -22,21 +23,25 @@ end
 [Nchanges, Ninputs] = size(U);
 
 
-NrepeatsInner = 5;
-NrepeatsOuter = 5;
+NrepeatsInner = 2;
+NrepeatsOuter = 10;
 Nsteps = Nchanges * NrepeatsInner * NrepeatsOuter;
 
 % simulate
 
-[V, W, X] = network (U, Nneurons, NrepeatsInner, NrepeatsOuter, vmin, percMax);
+[V, W, X] = network (U, Nneurons, NrepeatsInner, NrepeatsOuter, vmin, percMin, percMax);
 
 % output
 
 disp('V firing rates')
-[V(Nsteps-15,:);
-V(Nsteps-10,:);
-V(Nsteps-5,:);
-V(Nsteps,:)]
+V(Nsteps: -NrepeatsInner: 1 + Nchanges * NrepeatsInner * (NrepeatsOuter - 1), :)
+
+disp('V firing rates')
+V(Nchanges * NrepeatsInner * (NrepeatsOuter - 1): -NrepeatsInner: 1 + Nchanges * NrepeatsInner * (NrepeatsOuter - 2), :)
+
+disp('V firing rates')
+V(Nchanges * NrepeatsInner: -NrepeatsInner: 1, :)
+
 disp('X (vmin)')
 X
 

@@ -14,8 +14,8 @@ function [v, W, x] = neuron (U, W, x, perc)
 
   [Ninputs] = size(U);
 
-  eta = 0.2;
-  beta = 0.4;
+  eta = 0.05;
+  beta = 0.2;
 
   v = W' * U;
   if (v > 1.0)

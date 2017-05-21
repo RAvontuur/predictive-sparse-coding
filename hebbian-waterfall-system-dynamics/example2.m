@@ -32,19 +32,18 @@ NrepeatsOuter = 5;
 Nsteps = Nchanges * NrepeatsInner * NrepeatsOuter;
 % thresholds
 vmin = 0.1;
+percMin = 0.90;
 percMax = 0.98;
 
 % simulate
 
-[V, W, X] = network (U, Nneurons, NrepeatsInner, NrepeatsOuter, vmin, percMax);
+[V, W, X] = network (U, Nneurons, NrepeatsInner, NrepeatsOuter, vmin, percMin, percMax);
 
 % output
 
 disp('V firing rates')
-[V(Nsteps-15,:);
-V(Nsteps-10,:);
-V(Nsteps-5,:);
-V(Nsteps,:)]
+V(Nsteps: -NrepeatsInner: 1 + Nchanges * NrepeatsInner * (NrepeatsOuter - 1), :)
+
 disp('X (vmin)')
 X
 
