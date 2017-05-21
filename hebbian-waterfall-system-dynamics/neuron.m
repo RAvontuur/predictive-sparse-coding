@@ -19,16 +19,15 @@ function [v, deltaW, x] = neuron (U, W, x0)
   alfa = 0.2;
   beta = 0.4;
   perc =  0.9;
-
   v = W' * U;
-  deltaW = eta * (v * U - alfa * v * v * W);
+  x = beta * v + (1-beta) * x0;
 
   % some threshold, below this threshold pass input to next neuron
-  if (v > (perc * x0))
-    x = beta * v + (1-beta) * x0;
-  else
+  if (v < (perc * x))
     x = x0;
     v = 0;
     deltaW  = zeros(Ninputs);
+  else
+    deltaW = eta * (v * U - alfa * v * v * W);
   end
 end
