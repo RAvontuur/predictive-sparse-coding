@@ -1,13 +1,10 @@
 ## simulate a network of neurons
 ##
-function [V, W, X] = network (U, Nneurons, NrepeatsInner, NrepeatsOuter)
+function [V, W, X] = network (U, Nneurons, NrepeatsInner, NrepeatsOuter, vmin, percMax)
 
 [Nchanges, Ninputs] = size(U);
 
 Nsteps = Nchanges * NrepeatsInner * NrepeatsOuter;
-
-% threshold for v, below this will pass input to the next neuron
-vmin = 0.1;
 
 % firing rate for each neuron
 V = zeros(Nsteps+1, Nneurons);
@@ -23,7 +20,7 @@ for (i = 1:Ninputs)
   end
 end
 for (i = 1:Nneurons)
-    X(i) = vmin;
+    X(i) = 0.1;
 end
 
 for(to = 1:NrepeatsOuter)
@@ -33,12 +30,14 @@ for(to = 1:NrepeatsOuter)
             Ut =  U(tc,:)';
             v = 0;
             i = 1;
+            perc0 = percMax / (1 + floor(log2(Nneurons)));
             while (i <= Nneurons)
+                perc = (1 + floor(log2(i))) * perc0;
 
-                [v, deltaW, x] = neuron(Ut, W(:,i), X(i));
+                [v, Wi, Xi] = neuron(Ut, W(:,i), X(i), perc);
                 V(t+1,i) = v;
-                W(:,i) = W(:,i) + deltaW;
-                X(i) = x;
+                W(:,i) = Wi;
+                X(i) = Xi;
 
                 i = i * 2;
                 % choose odd branch when firing
