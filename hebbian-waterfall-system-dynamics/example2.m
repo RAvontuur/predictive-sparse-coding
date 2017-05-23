@@ -24,12 +24,15 @@ Ut4 = [0 0 0 0 0
       0 0 0 0 0];
 
 U = [vec(Ut1)'; vec(Ut2)'; vec(Ut3)'; vec(Ut4)'];
-[Nchanges, Ninputs] = size(U);
+
+C = [1;2;3;4];
+
+[nSamples, Ninputs] = size(U);
 
 
 NrepeatsInner = 5;
 NrepeatsOuter = 5;
-Nsteps = Nchanges * NrepeatsInner * NrepeatsOuter;
+Nsteps = nSamples * NrepeatsInner * NrepeatsOuter;
 % thresholds
 vmin = 0.1;
 percMin = 0.90;
@@ -38,11 +41,19 @@ percMax = 0.98;
 % simulate
 
 [V, W, X] = network (U, Nneurons, NrepeatsInner, NrepeatsOuter, vmin, percMin, percMax);
+Vfinal = V(Nsteps: -NrepeatsInner: 1 + nSamples * NrepeatsInner * (NrepeatsOuter - 1), :);
+
+W2 = classifier (Vfinal, C);
+
+c1 = classifySample (Vfinal(1,:)', W2)
+c2 = classifySample (Vfinal(2,:)', W2)
+c3 = classifySample (Vfinal(3,:)', W2)
+c4 = classifySample (Vfinal(4,:)', W2)
 
 % output
 
 disp('V firing rates')
-V(Nsteps: -NrepeatsInner: 1 + Nchanges * NrepeatsInner * (NrepeatsOuter - 1), :)
+Vfinal
 
 disp('X (vmin)')
 X

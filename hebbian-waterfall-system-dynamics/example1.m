@@ -1,8 +1,8 @@
 Ninputs = 2;
-Nneurons = 7;
+Nneurons = 15;
 % thresholds
 vmin = 0.1;
-percMin = 0.90;
+percMin = 0.50;
 percMax = 0.98;
 
 % set give input traject (noisy input)
@@ -20,27 +20,38 @@ for (t=1:4)
   U(t,1:Ninputs) = U(t,1:Ninputs) + [n1 n2];
 end
 
-[Nchanges, Ninputs] = size(U);
+C = [1;2;3;4];
+
+[nSamples, Ninputs] = size(U);
 
 
 NrepeatsInner = 2;
 NrepeatsOuter = 10;
-Nsteps = Nchanges * NrepeatsInner * NrepeatsOuter;
+Nsteps = nSamples * NrepeatsInner * NrepeatsOuter;
 
 % simulate
 
 [V, W, X] = network (U, Nneurons, NrepeatsInner, NrepeatsOuter, vmin, percMin, percMax);
+Vfinal = V(Nsteps: -NrepeatsInner: 1 + nSamples * NrepeatsInner * (NrepeatsOuter - 1), :);
+
+W2 = classifier (Vfinal, C);
+
+c1 = classifySample (Vfinal(1,:)', W2)
+c2 = classifySample (Vfinal(2,:)', W2)
+c3 = classifySample (Vfinal(3,:)', W2)
+c4 = classifySample (Vfinal(4,:)', W2)
+
 
 % output
 
 disp('V firing rates')
-V(Nsteps: -NrepeatsInner: 1 + Nchanges * NrepeatsInner * (NrepeatsOuter - 1), :)
+Vfinal
 
 disp('V firing rates')
-V(Nchanges * NrepeatsInner * (NrepeatsOuter - 1): -NrepeatsInner: 1 + Nchanges * NrepeatsInner * (NrepeatsOuter - 2), :)
+V(nSamples * NrepeatsInner * (NrepeatsOuter - 1): -NrepeatsInner: 1 + nSamples * NrepeatsInner * (NrepeatsOuter - 2), :)
 
 disp('V firing rates')
-V(Nchanges * NrepeatsInner: -NrepeatsInner: 1, :)
+V(nSamples * NrepeatsInner: -NrepeatsInner: 1, :)
 
 disp('X (vmin)')
 X
