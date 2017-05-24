@@ -41,7 +41,7 @@ percMax = 0.98;
 % simulate
 
 [V, W, X] = network (U, Nneurons, NrepeatsInner, NrepeatsOuter, vmin, percMin, percMax);
-Vfinal = V(Nsteps: -NrepeatsInner: 1 + nSamples * NrepeatsInner * (NrepeatsOuter - 1), :);
+Vfinal = V(1 + nSamples * NrepeatsInner * (NrepeatsOuter - 1): NrepeatsInner: Nsteps, :);
 
 W2 = classifier (Vfinal, C);
 

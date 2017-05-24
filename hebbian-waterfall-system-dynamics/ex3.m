@@ -9,13 +9,15 @@ fprintf('Loading Data ...\n')
 load('ex3data1.mat'); % training data stored in arrays X, y
 m = size(X, 1);
 
-% Randomly select 100 data points to display
+nSamples = 10;
+
+% Randomly select nSamples data points to display
 rand_indices = randperm(m);
-U = X(rand_indices(1:100), :);
+U = X(rand_indices(1:nSamples), :);
 
 displayData(U);
 
-C = y(rand_indices);
+C = y(rand_indices(1:nSamples));
 
 fprintf('Program paused. Press enter to continue.\n');
 pause;
