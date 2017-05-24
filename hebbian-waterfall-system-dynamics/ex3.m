@@ -1,4 +1,3 @@
-%% Machine Learning Online Class - Exercise 3 | Part 1: One-vs-all
 
 %% Initialization
 clear ; close all; clc
@@ -9,51 +8,37 @@ fprintf('Loading Data ...\n')
 load('ex3data1.mat'); % training data stored in arrays X, y
 m = size(X, 1);
 
-nSamples = 10;
+nSamples = 200;
+nValidations = 100;
 
 % Randomly select nSamples data points to display
 rand_indices = randperm(m);
 U = X(rand_indices(1:nSamples), :);
-
-displayData(U);
-
 C = y(rand_indices(1:nSamples));
+% Uvalidate = X(rand_indices(nSamples+1, nSamples + nValidations), :);
+% Cvalidate = y(rand_indices(nSamples+1, nSamples + nValidations));
+
+displayData(U(1:min(100, nSamples), :));
+
 
 fprintf('Program paused. Press enter to continue.\n');
 pause;
 
+page_output_immediately(1);
+
 [nSamples, Ninputs] = size(U);
 
-NrepeatsInner = 5;
-NrepeatsOuter = 5;
-Nsteps = nSamples * NrepeatsInner * NrepeatsOuter;
-Nneurons = 256;
+Nneurons = 4095;
 % thresholds
 vmin = 0.1;
-percMin = 0.20;
+percMin = 0.50;
 percMax = 0.98;
 
-% simulate
+[W, X] = initialize(Ninputs, Nneurons);
 
-[V, W, X] = network (U, Nneurons, NrepeatsInner, NrepeatsOuter, vmin, percMin, percMax);
-Vfinal = V(1 + nSamples * NrepeatsInner * (NrepeatsOuter - 1): NrepeatsInner: Nsteps, :);
+for (i=1:10)
+    [V, W, X] = network (U, W, X, vmin, percMin, percMax);
+    W2 = classifier (V, C);
+    validate(V, C, W2);
+end
 
-W2 = classifier (Vfinal, C);
-
-C(1:7)
-c1 = classifySample (Vfinal(1,:)', W2)
-c2 = classifySample (Vfinal(2,:)', W2)
-c3 = classifySample (Vfinal(3,:)', W2)
-c4 = classifySample (Vfinal(4,:)', W2)
-c5 = classifySample (Vfinal(5,:)', W2)
-c6 = classifySample (Vfinal(6,:)', W2)
-c7 = classifySample (Vfinal(7,:)', W2)
-
-
-% output
-
-%disp('V firing rates')
-%V(Nsteps: -NrepeatsInner: 1 + Nchanges * NrepeatsInner * (NrepeatsOuter - 1), :)
-
-%disp('X (vmin)')
-%X'

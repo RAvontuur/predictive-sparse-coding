@@ -1,12 +1,14 @@
 function W = classifier (V, C)
 
+fprintf('classifier\n')
+
 nClasses = max(C);
 [nSamples, nInputs] = size(V);
 
 % randomized initialization
 for (i = 1:nInputs)
   for (j= 1:nClasses)
-    W(i,j) = (0.5 + 0.5 * rand());
+    W(i,j) = (0.00001 + 0.001 * rand());
   end
 end
 

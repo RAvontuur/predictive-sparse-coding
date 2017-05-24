@@ -14,8 +14,8 @@ function [v, W, x] = neuron (U, W, x, perc)
 
   [Ninputs] = size(U);
 
-  eta = 0.05;
-  beta = 0.2;
+  eta = 0.02;
+  beta = 0.1;
 
   v = W' * U;
   if (v > 1.0)
@@ -27,16 +27,19 @@ function [v, W, x] = neuron (U, W, x, perc)
   if (v < x)
     v = 0.0;
   else
-    W = W + eta * v * U;
-    % limit firing rate to a maximum of one
-    v = W' * U;
-    if (v > 1.0)
-      W = W/v;
-      v = 1.0;
-    end
-    x = beta * v + (1-beta) * x;
-    if (x > perc)
-      x = perc;
+    % stop leaning if x >= perc
+    if (x < perc)
+      W = W + eta * v * U;
+      % limit firing rate to a maximum of one
+      v = W' * U;
+      if (v > 1.0)
+        W = W/v;
+        v = 1.0;
+      end
+      x = beta * v + (1-beta) * x;
+      if (x > perc)
+        x = perc;
+      end
     end
   end
 end
