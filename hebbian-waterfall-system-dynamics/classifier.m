@@ -1,7 +1,5 @@
 function W = classifier (V, C)
 
-fprintf('classifier\n')
-
 nClasses = max(C);
 [nSamples, nInputs] = size(V);
 

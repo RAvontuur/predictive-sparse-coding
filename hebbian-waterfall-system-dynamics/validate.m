@@ -1,9 +1,9 @@
 
-function res = validate(V, C, W2);
-
-fprintf('validate\n')
+function res = validate(U, C, W, X, W2, vmin, percMin, percMax);
 
 nSamples = size(C,1);
+
+[V, W, X] = network (U, W, X, vmin, percMin, percMax, 0);
 
 ok = 0;
 for (i = 1:nSamples)

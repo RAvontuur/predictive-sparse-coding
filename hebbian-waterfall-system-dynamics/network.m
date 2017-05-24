@@ -1,9 +1,6 @@
 ## simulate a network of neurons
 ##
-function [V, W, X] = network (U, W, X, vmin, percMin, percMax)
-
-page_output_immediately(1)
-fprintf('network\n')
+function [V, W, X] = network (U, W, X, vmin, percMin, percMax, learn)
 
 nInner = 1;
 
@@ -23,8 +20,11 @@ for(s = 1:nSamples)
 
             [v, Wi, Xi] = neuron(Us, W(:,i), X(i), perc);
             V(s,i) = v;
-            W(:,i) = Wi;
-            X(i) = Xi;
+
+            if (learn > 0)
+                W(:,i) = Wi;
+                X(i) = Xi;
+            end
 
             i = i * 2;
             % choose odd branch when firing

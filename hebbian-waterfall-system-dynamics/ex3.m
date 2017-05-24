@@ -6,17 +6,17 @@ clear ; close all; clc
 fprintf('Loading Data ...\n')
 
 load('ex3data1.mat'); % training data stored in arrays X, y
-m = size(X, 1);
+m = size(X, 1)
 
-nSamples = 200;
-nValidations = 100;
+nSamples = 4000;
+nValidations = 1000;
 
 % Randomly select nSamples data points to display
 rand_indices = randperm(m);
 U = X(rand_indices(1:nSamples), :);
 C = y(rand_indices(1:nSamples));
-% Uvalidate = X(rand_indices(nSamples+1, nSamples + nValidations), :);
-% Cvalidate = y(rand_indices(nSamples+1, nSamples + nValidations));
+Uvalidate = X(rand_indices(nSamples+1:nSamples + nValidations), :);
+Cvalidate = y(rand_indices(nSamples+1:nSamples + nValidations));
 
 displayData(U(1:min(100, nSamples), :));
 
@@ -28,7 +28,7 @@ page_output_immediately(1);
 
 [nSamples, Ninputs] = size(U);
 
-Nneurons = 4095;
+Nneurons = 2^14 - 1;
 % thresholds
 vmin = 0.1;
 percMin = 0.50;
@@ -37,8 +37,10 @@ percMax = 0.98;
 [W, X] = initialize(Ninputs, Nneurons);
 
 for (i=1:10)
-    [V, W, X] = network (U, W, X, vmin, percMin, percMax);
+    fprintf('...\n')
+    [V, W, X] = network (U, W, X, vmin, percMin, percMax, 1);
     W2 = classifier (V, C);
-    validate(V, C, W2);
+    validate(U, C, W, X, W2, vmin, percMin, percMax);
+    validate(Uvalidate, Cvalidate, W, X, W2, vmin, percMin, percMax);
 end
 
